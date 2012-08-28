@@ -6,12 +6,14 @@ import re
 import ConfigParser
 import urllib
 import ast
+import bitly_api
 from sys import argv, exc_info
 from os import environ, makedirs
 from math import *
 from time import strftime, localtime
 from tttlib import *
 from datetime import datetime
+
 
 # Admin name(s) for certain commands
 # Usage:
@@ -393,10 +395,13 @@ def parsemsg(info, msg, sender):
             # find the title of the page.
             titleRegex = re.compile('.*<title>(.+)</title>.*', 
                                     re.DOTALL).match(source)
+			#shorten URL
+            c = bitly_api.Connection('o_mqcatq9eo', 'R_8e316b12705c4fde7dc8f8c154fb11cf')
+            short_url = c.shorten(website.group(0))['url']
             # and finally, set ret to equal our message reporting our findings.
-            ret =   'PRIVMSG ' + info[2] + ' :Title: ' + titleRegex.group(1) + '\n'
+            ret =   'PRIVMSG ' + info[2] + ' :Title: ' + titleRegex.group(1) + ' - ' + short_url + '\n'
         except:
-            print "Error:", exc_info()[0] # in case of exception, print error.
+            print "Error:", exc_info() # in case of exception, print error.
             pass
         sock.close()
 
