@@ -401,7 +401,7 @@ def parsemsg(info, msg, sender):
             # and finally, set ret to equal our message reporting our findings.
             ret =   'PRIVMSG ' + info[2] + ' :Title: ' + titleRegex.group(1) + ' - ' + short_url + '\n'
         except:
-            print "Error:", exc_info() # in case of exception, print error.
+            print "Error:", exc_info()[0] # in case of exception, print error.
             pass
         sock.close()
 
